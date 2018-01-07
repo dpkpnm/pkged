@@ -1,5 +1,72 @@
 <template>
 	<div class=wrapper>
+     <div class="page-container">
+    <md-app md-waterfall md-mode="fixed-last">
+      <md-app-toolbar class="md-large md-dense md-primary">
+        <div class="md-toolbar-row">
+          <div class="md-toolbar-section-start">
+            <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
+              <md-icon>menu</md-icon>
+            </md-button>
+
+            <span class="md-title">ReadToKid</span>
+          </div>
+
+          <div class="md-toolbar-section-end">
+            <md-button class="md-icon-button">
+              <md-icon>more_vert</md-icon>
+            </md-button>
+          </div>
+        </div>
+
+        <div class="md-toolbar-row">
+          <md-tabs class="md-primary">
+            <md-tab id="tab-home" md-label="Home"></md-tab>
+            <md-tab id="tab-pages" md-label="Pages"></md-tab>
+            <md-tab id="tab-posts" md-label="Posts"></md-tab>
+            <md-tab id="tab-favorites" md-label="Favorites"></md-tab>
+          </md-tabs>
+        </div>
+      </md-app-toolbar>
+
+      <md-app-drawer :md-active.sync="menuVisible">
+        <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
+
+        <md-list>
+          <md-list-item>
+            <md-icon>move_to_inbox</md-icon>
+            <span class="md-list-item-text">Inbox</span>
+          </md-list-item>
+
+          <md-list-item>
+            <md-icon>send</md-icon>
+            <span class="md-list-item-text">Sent Mail</span>
+          </md-list-item>
+
+          <md-list-item>
+            <md-icon>delete</md-icon>
+            <span class="md-list-item-text">Trash</span>
+          </md-list-item>
+
+          <md-list-item>
+            <md-icon>error</md-icon>
+            <span class="md-list-item-text">Spam</span>
+          </md-list-item>
+        </md-list>
+      </md-app-drawer>
+    <md-app-content>
+    
+    <div  class="flex">
+
+      <div class=item v-for="book in data">
+        <div class=img @click="showVideo(book.video)"><img :src="book.img.replace('books','book').replace('s/','l/').replace('book','books')" v-if="book.img!=null" /></div>
+        <h1>{{book.title}}</h1> 
+        <div class=author>by {{book.author}}</div>
+      </div>
+      
+    </div>
+
+
 		<div>
 			<md-radio v-model="datatype" value="form">Form</md-radio>
 		  <md-radio v-model="datatype" value="json">JSON</md-radio>
@@ -13,17 +80,29 @@
 	      <label>Content</label>
 	      <md-textarea v-model="record.content" placeholder="Content"></md-textarea>
 	    </md-field>
-	    <md-button class="md-fab md-primary " @click="addData">
-	      <md-icon>done</md-icon>
-	    </md-button>
+	    
 	  </template>
    	<template v-if="datatype=='json'">
-   		<md-textarea v-model="jsondata"></md-textarea>
+      <md-field>
+        <label>Content</label>
+   		  <md-textarea v-model="jsondata"></md-textarea>
+      </md-field>
    	</template>
-	<!-- <md-icon>add</md-icon> -->
+    <md-button class="md-fab md-primary " @click="addData">
+        <md-icon>done</md-icon>
+      </md-button>
+	
+  <button @click="closeVideo"> <md-icon class="close" v-if="showDialog">close</md-icon></button>
+  <md-dialog :md-active.sync="showDialog">
+    <div class="video">
+      <iframe width=600 height=600 allowfullscreen :src="youtubeurl" frameborder="0"></iframe>
+    </div>
+  </md-dialog>
 
-
+</md-app-content>
+</md-app>
 	</div>
+</div>
 </template>
 
 <script>
@@ -37,13 +116,16 @@ export default {
       pagetype:"main",
       datatype:"form",
       jsondata:"",
+      showDialog: false,
       record: {
         content:"",
         title:"",
         category:""
         
       },
-      height:"600px",
+      video:null,
+
+      
       menuVisible:false,
 
     }
@@ -52,14 +134,37 @@ export default {
     ...mapGetters(['data']),
     website() {
     	if(location.hostname=="localhost")
-    		return "pkged";
+    		return "readtokid";
     	return location.hostname.replace(".com","").toLowerCase();
+    },
+    height() {
+      return innerHeight;
+    },
+    width() {
+      return innerWidth;
+    },
+    youtubeurl() {
+      return "https://www.youtube.com/embed/"+(this.video || 'muGAPNgBXDc')+"?autoplay=1&modestbranding=1;controls=0;showinfo=0;rel=0;fs=1";
     }
   },
   methods: {
+    showVideo(id) {
+      this.showDialog=true;
+      this.video=id;
+    },
     addData() {
-      dbRef[this.website].push(this.record);
+      if(this.datatype=='form')
+        dbRef[this.website].push(this.record);
+      else {
+        var data = JSON.parse(this.jsondata);
+        for(var i=0; i<data.length; i++)
+          dbRef[this.website].push(data[i]);
+      }
+
       this.pagetype='main';
+    },
+    closeVideo() {
+      this.showDialog=false;
     },
     showRecord(id) {
       this.pagetype='details';
@@ -105,3 +210,42 @@ export default {
   }
 }
 </script>
+<style type="text/css" scoped>
+  .wrapper {margin:0 5%;}
+  .flex {display: flex;flex-wrap: wrap;}
+  .item { width:150px; margin:8px; }
+  .item img {max-width:150px; max-height: 150px;}
+  .img {height: 190px; background:#fff; display: flex; align-items: center; justify-content: center;}
+  .item h1 {font-size: 0.8rem; margin:8px 0 0; padding:0; line-height:1;}
+  .author {font-size: 0.6rem; color: #999; line-height:1; width:100%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+  .close {position: absolute; right:16px ; top:16px; z-index:100; color:#fff;}
+  .md-dialog {
+    max-width:100%;
+    max-height:100%;
+    width:100%;
+    height:100%;
+    background: #000;
+  }
+
+  .video {
+    background-color:#000;
+    /*display: flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100%;*/
+    position:relative;
+    padding-bottom:56.25%;
+    padding-top:30px;
+    height:0;
+    overflow:hidden;
+  }
+
+  .video iframe, .video object, .video embed {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+  }
+</style>
