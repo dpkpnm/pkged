@@ -1,29 +1,26 @@
 <template>
-	<div class=wrapper>
-		<div>
-			<md-radio v-model="datatype" value="form">Form</md-radio>
-		  <md-radio v-model="datatype" value="json">JSON</md-radio>
-		</div>
-		<template v-if="datatype=='form'">
-			<md-field>
-	      <label>Title</label>
-	      <md-input v-model="record.title" placeholder="Title"></md-input>
-	    </md-field>
-	    <md-field>
-	      <label>Content</label>
-	      <md-textarea v-model="record.content" placeholder="Content"></md-textarea>
-	    </md-field>
-	    <md-button class="md-fab md-primary " @click="addData">
-	      <md-icon>done</md-icon>
-	    </md-button>
-	  </template>
-   	<template v-if="datatype=='json'">
-   		<md-textarea v-model="jsondata"></md-textarea>
-   	</template>
-	<!-- <md-icon>add</md-icon> -->
-
-
-	</div>
+  <div>
+  	<div id=menu class="flex bb">
+      <h2 class="br ph16 flex"><i>menu</i><div>MENU</div></h2>
+      <h1 class="flex-grow br ph16 center">READTOKID</h1>
+      <h2 class="ph16 primarybg">REGISTER / LOG IN</h2>
+    </div>
+    <div id=content class="ph64">
+      <h3>Sites of the day <span>This is the content</span></h3>
+      <section class="flex flex-start flex-wrap">
+        <div class="ph16 pl0 record" v-for="record in data">
+          <div class=img v-if="record.img" :style='{backgroundImage:"url(" + record.img.replace("books","book").replace("s/","l/").replace("book","books") + ")"}'></div>
+          <div class="title p32">
+            <h4>{{record.title}}</h4>
+            <p class=pv16>by <a href=#>{{record.author}}</a></p>
+          </div>
+        </div>
+      </section>
+      <h3>Nominees <span>We need your vote!</span></h3>
+      <h3>Directory <span>Find the Best Digital Agencies & Professionals</span></h3>
+    </div>
+    <div id="footer"></div>
+  </div>
 </template>
 
 <script>
@@ -52,7 +49,7 @@ export default {
     ...mapGetters(['data']),
     website() {
     	if(location.hostname=="localhost")
-    		return "pkged";
+    		return "readtokid";
     	return location.hostname.replace(".com","").toLowerCase();
     }
   },
