@@ -58,7 +58,7 @@
     
     <div  class="flex">
 
-      <div class=item v-for="book in data">
+      <div class=item v-for="book in data" :width="width/5">
         <div class=img @click="showVideo(book.video)"><img :src="book.img.replace('books','book').replace('s/','l/').replace('book','books')" v-if="book.img!=null" /></div>
         <h1>{{book.title}}</h1> 
         <div class=author>by {{book.author}}</div>
@@ -213,11 +213,11 @@ export default {
 <style type="text/css" scoped>
   .wrapper {margin:0 5%;}
   .flex {display: flex;flex-wrap: wrap;}
-  .item { width:150px; margin:8px; }
+  .item { padding:32px; }
   .item img {max-width:150px; max-height: 150px;}
   .img {height: 190px; background:#fff; display: flex; align-items: center; justify-content: center;}
-  .item h1 {font-size: 0.8rem; margin:8px 0 0; padding:0; line-height:1;}
-  .author {font-size: 0.6rem; color: #999; line-height:1; width:100%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+  .item h1 {font-size: 0.8rem; margin:8px 0 16px; padding:0; line-height:1.4;}
+  .author {font-size: 0.8rem; color: #999; line-height:1; width:100%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
   .close {position: absolute; right:16px ; top:16px; z-index:100; color:#fff;}
   .md-dialog {
     max-width:100%;
