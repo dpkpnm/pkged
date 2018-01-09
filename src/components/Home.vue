@@ -34,13 +34,16 @@ export default {
       pagetype:"main",
       datatype:"form",
       jsondata:"",
+      showDialog: false,
       record: {
         content:"",
         title:"",
         category:""
         
       },
-      height:"600px",
+      video:null,
+
+      
       menuVisible:false,
 
     }
@@ -51,12 +54,35 @@ export default {
     	if(location.hostname=="localhost")
     		return "readtokid";
     	return location.hostname.replace(".com","").toLowerCase();
+    },
+    height() {
+      return innerHeight;
+    },
+    width() {
+      return innerWidth;
+    },
+    youtubeurl() {
+      return "https://www.youtube.com/embed/"+(this.video || 'muGAPNgBXDc')+"?autoplay=1&modestbranding=1;controls=0;showinfo=0;rel=0;fs=1";
     }
   },
   methods: {
+    showVideo(id) {
+      this.showDialog=true;
+      this.video=id;
+    },
     addData() {
-      dbRef[this.website].push(this.record);
+      if(this.datatype=='form')
+        dbRef[this.website].push(this.record);
+      else {
+        var data = JSON.parse(this.jsondata);
+        for(var i=0; i<data.length; i++)
+          dbRef[this.website].push(data[i]);
+      }
+
       this.pagetype='main';
+    },
+    closeVideo() {
+      this.showDialog=false;
     },
     showRecord(id) {
       this.pagetype='details';
