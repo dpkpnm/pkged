@@ -1,15 +1,16 @@
 <template>
   <div>
-  	<div id=menu class="flex bb">
-      <h2 class="br ph16 flex"><i>menu</i><div>MENU</div></h2>
-      <h1 class="flex-grow br ph16 center">READTOKID</h1>
-      <h2 class="ph16 primarybg">REGISTER / LOG IN</h2>
+  	<div id=menu :class="{flex:true,bb:true,dark:!homepage}">
+      <h2 class="br ph16 flex" v-if="homepage"><i>menu</i><div>MENU</div></h2>
+      <h2 class="br ph16 flex" v-if="!homepage" @click="closeVideo"><i>chevron_left</i></h2>
+      <h1 class="flex-grow br ph16 center">{{website}}</h1>
+      <h2 class="ph16 primarybg"  v-if="homepage">REGISTER / LOG IN</h2>
     </div>
-    <div id=content class="ph64">
-      <h3>Sites of the day <span>This is the content</span></h3>
+    <div id="content" class="ph64" :style="{'height':(winheight)+'px'}" v-show="homepage">
+      <h3>Books of the day <span>New books added today</span></h3>
       <section class="flex flex-start flex-wrap">
         <div class="ph16 pl0 record" v-for="record in data">
-          <div class=img v-if="record.img" :style='{backgroundImage:"url(" + record.img.replace("books","book").replace("s/","l/").replace("book","books") + ")"}'></div>
+          <div @click="showVideo(record.video)" class=img v-if="record.img" :style='{backgroundImage:"url(" + record.img.replace("books","book").replace("s/","l/").replace("book","books") + ")"}'></div>
           <div class="title p32">
             <h4>{{record.title}}</h4>
             <p class=pv16>by <a href=#>{{record.author}}</a></p>
@@ -18,6 +19,9 @@
       </section>
       <h3>Nominees <span>We need your vote!</span></h3>
       <h3>Directory <span>Find the Best Digital Agencies & Professionals</span></h3>
+    </div>
+    <div id="details" v-show="!homepage">
+      <iframe  type="text/html" :width="width" :height="winheight" :src="video" frameborder="0"></iframe>
     </div>
     <div id="footer"></div>
   </div>
@@ -35,6 +39,7 @@ export default {
       datatype:"form",
       jsondata:"",
       showDialog: false,
+      homepage:true,
       record: {
         content:"",
         title:"",
@@ -42,6 +47,8 @@ export default {
         
       },
       video:null,
+      winheight:innerHeight-70,
+      width:innerWidth,
 
       
       menuVisible:false,
@@ -55,21 +62,15 @@ export default {
     		return "readtokid";
     	return location.hostname.replace(".com","").toLowerCase();
     },
-    height() {
-      return innerHeight;
-    },
-    width() {
-      return innerWidth;
-    },
-    youtubeurl() {
-      return "https://www.youtube.com/embed/"+(this.video || 'muGAPNgBXDc')+"?autoplay=1&modestbranding=1;controls=0;showinfo=0;rel=0;fs=1";
-    }
+   
   },
   methods: {
     showVideo(id) {
-      this.showDialog=true;
-      this.video=id;
+      this.homepage=false;
+      this.video='https://www.youtube.com/embed/'+id+'?autoplay=1';
+
     },
+    
     addData() {
       if(this.datatype=='form')
         dbRef[this.website].push(this.record);
@@ -82,7 +83,8 @@ export default {
       this.pagetype='main';
     },
     closeVideo() {
-      this.showDialog=false;
+      this.homepage=true;
+      this.video="";
     },
     showRecord(id) {
       this.pagetype='details';
