@@ -10,10 +10,11 @@
       <h3>Books of the day <span>New books added today</span></h3>
       <section class="flex flex-start flex-wrap">
         <div class="ph16 pl0 record" v-for="record in data">
-          <div @click="showVideo(record.video)" class=img v-if="record.img" :style='{backgroundImage:"url(" + record.img.replace("books","book").replace("s/","l/").replace("book","books") + ")"}'></div>
-          <div class="title p32">
+          <img @click="showVideo(record.video)" :src="record.img.replace('books','book').replace('s/','l/').replace('book','books')" v-if="record.img" />
+<!--           <div @click="showVideo(record.video)" class=img v-if="record.img" :style='{backgroundImage:"url(" + record.img.replace("books","book").replace("s/","l/").replace("book","books") + ")"}'></div> -->
+          <div class="title pb32">
             <h4>{{record.title}}</h4>
-            <p class=pv16>by <a href=#>{{record.author}}</a></p>
+            <p class=pv8>by <a href=#>{{record.author}}</a></p>
           </div>
         </div>
       </section>
