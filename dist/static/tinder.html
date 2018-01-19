@@ -1,0 +1,104 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Material+Icons" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+
+<style type="text/css">
+  * {margin:0; padding:0; box-sizing: border-box;}
+  #app {font-family: "Roboto"; display: flex; justify-content: center; width:100%; height:100%; align-items: center; background:#63BDF7; font-size:24px; overflow: hidden;}
+  .wrapper {position: relative; width:100vw; margin:64px 8px; height:100%;}
+  .content {background:#fff; overflow:hidden; }
+  .card {text-align: center; transition: all 0.6s;  position: absolute; left:0; top:64px; width:100%; background: #fff; height:80%; overflow: hidden;display: flex; justify-content: center; align-items: center; }
+  .swipetext {margin: 16px;}
+  .header {height: 48px; background:#248CB6; color:#fff; line-height: 36px; z-index:10; position: fixed; top:0; left:0; width:100%;}
+  i {font-family: 'Material Icons'; font-weight: normal; font-style: normal; text-transform: none; letter-spacing: normal; word-wrap: normal; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; font-feature-settings: 'liga';  padding:4px; font-size:18px;} 
+  .footer {display: flex; padding:0 32px; z-index:10; position: absolute; bottom:0; left:0; width:100%;}
+  .footer i {font-size: 48px; }
+  .spacer {flex-grow:1;}
+  .clear {transform: translateX(-30rem) rotate(-30deg); opacity:0;}
+  .favorite {transform: translate(30rem) rotate(30deg); opacity:0;}
+  /*.favoritecard, .clearcard, .img {position: absolute; top:0; left:0; opacity:0;}*/
+  .img {opacity:1;display: flex; justify-content: center; align-items: center; height:100%; }
+  .clear .clearcard {opacity:1;}
+  .favorite .favoritecard {opacity:1;}
+  .pointer {cursor: pointer;}
+  .center {width:100%; height:40px; text-align:center;}
+  img {max-width:100%; min-width:90vw;}
+</style>
+<body>
+  <div id=app>
+    <div class=content>
+      <div class=header><i>menu</i>తెలుగు కార్టూన్లు </div>
+      <div class=wrapper>
+        <div class="card">
+          <div class="center">మరికొన్ని...</div>
+        </div>
+        <div :class="{card:true,clear:card.clear,favorite:card.favorite}" v-for="card in cards">
+          <div class="img"><img :src="card.url"></div>
+          <div class="clearcard"></div>
+          <div class="favoritecard"></div>
+        </div>
+      </div>
+      <div class=footer>
+        <div @click="action('clear')" class="pointer"><i>clear</i><div>బాలేదు</div></div>
+        <div class=spacer></div>
+        <div @click="action('favorite')" class="pointer"><i>favorite</i><div>బాగుంది</div> </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+  var config = {
+    apiKey: "AIzaSyC00DGUDNikFGk2YVWKfNZQu8ZEV3gCUr8",
+    authDomain: "pkged01.firebaseapp.com",
+    databaseURL: "https://pkged01.firebaseio.com",
+    projectId: "pkged01",
+    storageBucket: "pkged01.appspot.com",
+  };
+  firebase.initializeApp(config);
+  const db = firebase.database();
+  var app = new Vue({
+  el: '#app',
+  data: {
+    currentcard:0,
+    cards:[],
+    lastcard:""
+  },
+  mounted: function() {
+    this.getNextData();
+  },
+  
+  methods: {
+    action: function(actiontype) {
+      if(this.currentcard<=0) {
+        this.getNextData();
+      }
+      if(actiontype=='clear')
+        this.cards[this.currentcard].clear=true;
+      if(actiontype=='favorite')
+        this.cards[this.currentcard].favorite=true;
+      this.currentcard--;
+    },
+    getNextData: function() {
+      debugger;
+      var ref = db.ref("cartoons").orderByChild("name").limitToFirst(10).startAt(this.lastcard);
+      var that = this;
+      this.cards=[];
+      ref.once("value", function(data){
+        
+        _(data.val()).each(function(v) {
+          that.cards.push({url:v.url,favorite:false,clear:false,name:v.name});
+        })
+        that.currentcard = that.cards.length-1;
+        console.log(that.currentcard);
+        debugger;
+        that.lastcard = that.cards[that.currentcard].name;
+        console.log(that.lastcard);
+        // console.log( _(data.val()).map().value());
+      })
+    },
+  }
+})
+</script>
