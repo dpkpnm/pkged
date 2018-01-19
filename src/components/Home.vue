@@ -33,7 +33,6 @@ import { mapGetters,mapMutations } from 'vuex';
 
 export default {
   name: 'Home',
-  
   data () {
     return {
       pagetype:"main",
