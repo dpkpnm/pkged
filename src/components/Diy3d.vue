@@ -62,7 +62,7 @@
 				<img class=medium src=https://www.staples.com/sbd/cre/marketing/what-is-3d-printing/images/section_1.png>
 			</div>
 			<div class=w33>
-				<img class=medium src=https://i2.wp.com/makezine.com/wp-content/uploads/2017/08/FEATURED-NightBloomingFlower_Openers.jpg?fit=2000%2C1204&ssl=1>
+				<img class=medium src="https://i2.wp.com/makezine.com/wp-content/uploads/2017/08/FEATURED-NightBloomingFlower_Openers.jpg?fit=2000%2C1204&ssl=1">
 			</div>
 
 		</div>
@@ -71,11 +71,50 @@
 	</footer>
 </main>
 </template>
-<style type="text/css">
- 	* { margin:0; padding:0; box-sizing: border-box; }
- 	html { font-size: 18px; }
- 	body {font-family: Roboto; letter-spacing:1; background: #333; padding: 16px; color:#666; }
-	main {margin:0 auto; background:#fff; padding: 2rem 6rem; min-height:100vh;}
+
+<script>
+import {dbRef} from '../firebaseconfig';
+import { mapGetters,mapMutations } from 'vuex';
+
+export default {
+  name: 'Diy3d',
+  data () {
+    return {
+    }
+  },
+  computed: {
+    ...mapGetters(['data'])
+    
+   
+  },
+  methods: {
+    
+
+    getData(val) {
+      this.menuVisible=false;
+      this.category=val;
+      this.pagetype="main";
+      this.$store.commit("category",val);
+      this.$store.commit('changeCategory',val);
+      // console.log(this.website);
+      this.$store.dispatch("setData",{ref:dbRef[this.website],category:this.category});
+    }
+  },
+  created() {
+    this.$store.dispatch("setData",dbRef["diy3dprint"]);
+    this.height = (innerHeight-64)+"px"
+
+  },
+  filters: {
+    cleanup(val) {
+      return val.replace('/\n/g','<br>');
+    }
+  }
+}
+</script>
+
+<style scoped>
+ 	
 	h1 {font-weight: 900; font-size: 1.2rem; letter-spacing: 2px; text-align: center; color:#111;}
 	.flex {display: flex;}
 	.center {text-align: center; justify-content: center; align-items: }

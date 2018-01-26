@@ -132,7 +132,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
   * {margin:0; padding:0; box-sizing: border-box;}
   body {font-family:"Roboto"; font-weight:300; color:#202121; font-size:14px; -webkit-font-smoothing: antialiased; overflow: hidden;}
