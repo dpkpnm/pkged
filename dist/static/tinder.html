@@ -11,7 +11,7 @@
   .content {background:#fff; overflow:hidden; }
   .card {text-align: center; transition: all 0.6s;  position: absolute; left:0; top:64px; width:100%; background: #fff; height:80%; overflow: hidden;display: flex; justify-content: center; align-items: center; }
   .swipetext {margin: 16px;}
-  .header {height: 48px; background:#248CB6; color:#fff; line-height: 36px; z-index:10; position: fixed; top:0; left:0; width:100%;}
+  .header {height: 48px; text-align:center; color:#999; line-height: 36px; z-index:10; position: fixed; top:0; left:0; width:100%;}
   i {font-family: 'Material Icons'; font-weight: normal; font-style: normal; text-transform: none; letter-spacing: normal; word-wrap: normal; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; font-feature-settings: 'liga';  padding:4px; font-size:18px;} 
   .footer {display: flex; padding:0 32px; z-index:10; position: absolute; bottom:0; left:0; width:100%;}
   .footer i {font-size: 48px; }
@@ -29,7 +29,7 @@
 <body>
   <div id=app>
     <div class=content>
-      <div class=header><i>menu</i>తెలుగు కార్టూన్లు </div>
+      <div class=header>కార్టూన్లు </div>
       <div class=wrapper>
         <div class="card">
           <div class="center">మరికొన్ని...</div>
@@ -41,9 +41,11 @@
         </div>
       </div>
       <div class=footer>
-        <div @click="action('clear')" class="pointer"><i>clear</i><div>బాలేదు</div></div>
         <div class=spacer></div>
-        <div @click="action('favorite')" class="pointer"><i>favorite</i><div>బాగుంది</div> </div>
+        <div @click="action('clear')" class="pointer"><i>clear</i></div>
+        <div class=spacer></div>
+        <div @click="action('favorite')" class="pointer"><i>favorite</i></div>
+        <div class=spacer></div>
       </div>
     </div>
   </div>

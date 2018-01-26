@@ -131,3 +131,50 @@ export default {
   }
 }
 </script>
+
+<style>
+
+  * {margin:0; padding:0; box-sizing: border-box;}
+  body {font-family:"Roboto"; font-weight:300; color:#202121; font-size:14px; -webkit-font-smoothing: antialiased; overflow: hidden;}
+  .primary {color:#F7DF1E;}
+  .primarybg {background-color:#F7DF1E;}
+  a {font-weight: 700; color:#DAB92D; text-decoration: none;}
+  h1 { font-size: 28px; text-transform: uppercase;}
+  h2 {font-size: 14px;}
+  h3 {font-size: 18px; padding:50px 0;}
+  h3 span {font-weight: 300;}
+  h4,h5,h6 {font-weight: 700; font-size:12px; margin-top:4px;}
+  p { font-weight:300; font-size:12px; }
+  #menu {height: 70px; line-height: 70px; display:fixed;}
+  #content {height:100%; overflow-y:auto; overflow-x:hidden;}
+  .bl {border-left:1px solid #E6EAEA;}
+  .br {border-right:1px solid #E6EAEA;}
+  .bb {border-bottom:1px solid #E6EAEA;}
+  .bt {border-top:1px solid #E6EAEA;}
+  .pl16 {padding-left:16px;}
+  .pr16 {padding-right:16px;}
+  .pt16 {padding-top:16px;}
+  .pb16 {padding-bottom:16px;}
+  .pv16 {padding-top:16px; padding-bottom:16px;}
+  .ph16 {padding-left:16px; padding-right:16px;}
+  .ph64 {padding-left:64px; padding-right:64px;}
+  .p32 {padding:32px;}
+  .pb32 {padding-bottom:32px;}
+  .pv32 {padding-top:32px; padding-bottom:32px;}
+  .pl0 {padding-left:0;}
+  .flex {display: flex; justify-content: center; align-items: center;}
+  .flex-grow {flex-grow:1; }
+  .flex-start {justify-content: flex-start; }
+  .flex-wrap {flex-wrap:wrap;}
+  .center {text-align:center;}
+  i {font-family: 'Material Icons'; font-weight: normal; font-style: normal; text-transform: none; letter-spacing: normal; word-wrap: normal; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; font-feature-settings: 'liga';  padding:4px; font-size:18px;}
+  .record {width: 240px;}
+  img {max-height: 180px;}
+  .img {min-height: 180px; background-size: cover; background-repeat: no-repeat;}
+  .dark {background-color:rgba(0,0,0,.8);}
+  .dark h1,  {color:rgba(128,128,128,0.3);}
+  .dark i {color:#fff; font-size: 36px;}
+  .dark.bb { border-bottom:0px;}
+  .dark .br { border-right:0px;}
+
+</style>  
