@@ -14,7 +14,7 @@
 		<button @click="cancel">Cancel</button>
 		<button @click="addData">Save</button>
 	</section>
-	<section v-if="!add && data" v-html="record.article">
+	<section v-if="!add" v-html="article">
 		
 	</section>
 	<section v-if="!add">
@@ -51,7 +51,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['data'])
+    ...mapGetters(['data']),
+    article() {
+    	debugger;
+    	var val = _(this.data).map().value();
+    	console.log();
+    	return val[0].article ? val[val.length-2].article : "Loading";
+    }
    
   },
   methods: {
@@ -72,9 +78,7 @@ export default {
   },
   created() {
     this.$store.dispatch("setData",dbRef["diy3dprint"]);
-    debugger;
-    this.height = (innerHeight-64)+"px"
-
+    
   },
   filters: {
     cleanup(val) {
