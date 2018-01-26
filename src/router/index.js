@@ -22,7 +22,7 @@ const generateRoutes = () => {
       ]
   	}
     default: {
-      return [{path:'/',component:Cartoons}]
+      return [{path:'/',component:Diy3d}]
     }
   }
 }
