@@ -5,6 +5,8 @@ import Pkged from '@/components/Pkged'
 import Other from '@/components/Other'
 import Cartoons from '@/components/Cartoons'
 import Diy3d from '@/components/Diy3d'
+import Javascript from '@/components/Javascript'
+import Readtokid  from '@/components/Readtokid'
 
 
 Vue.use(Router)
@@ -14,6 +16,12 @@ const generateRoutes = () => {
     case "diy3dprint.com": {
       return [{path:"/",component:Diy3d}]
     }
+    case "thejavascript.com": {
+      return [{path:"/", component:Javascript}]
+    }
+    // case "readtokid.com": {
+    //   return [{path:"/", component:Readtokid}]
+    // }
   	case "pkged.com": {
   		return [
         {path:'/',component:Pkged},
@@ -22,7 +30,7 @@ const generateRoutes = () => {
       ]
   	}
     default: {
-      return [{path:'/',component:Diy3d}]
+      return [{path:'/',component:Javascript}]
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<main id="diy3d">
 	<header class=flex>
 		<h1>DIY<br>3D PRINT</h1>
 		<div class="spacer center">
@@ -14,7 +14,8 @@
 		<button @click="cancel">Cancel</button>
 		<button @click="addData">Save</button>
 	</section>
-	<section v-if="!add" v-html="article">
+	<section v-if="!add">
+		<div v-html="article"></div>
 		
 	</section>
 	<section v-if="!add">
@@ -88,28 +89,28 @@ export default {
 }
 </script>
 
-<style scoped>
-	textarea {width:100%; height:90vh;}
-	h1 {font-weight: 900; font-size: 1.2rem; letter-spacing: 2px; text-align: center; color:#111;}
-	.flex {display: flex;}
-	.center {text-align: center; justify-content: center; align-items: }
-	.spacer {flex-grow: 1;}
+<style>
+	#diy3d textarea {width:100%; height:90vh;}
+	#diy3d h1 {font-weight: 900; font-size: 1.2rem; letter-spacing: 2px; text-align: center; color:#111;}
+	#diy3d .flex {display: flex;}
+	#diy3d .center {text-align: center; justify-content: center; align-items: }
+	#diy3d .spacer {flex-grow: 1;}
 
-	li {list-style: none; display: inline; padding: 1rem; line-height: 2rem;}
-	i {color:#111; font-family: 'Material Icons'; font-weight: normal; font-style: normal; font-size: 1.8rem; line-height: 2rem; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; font-feature-settings: 'liga'; padding-left: 32px; } 
-	h2 {color:#111; font-size: 2rem; font-weight:500; margin-bottom: 1rem;} h3 {color:#111; font-size: 1.6rem; font-weight:500; margin: 4rem 0 1rem;}
-	h4 {font-size: 1.2rem; color:#111; font-weight: 500; margin: 3rem 0 2rem;}
-	section {border-bottom:1px solid #eee; padding-bottom: 4rem;}
-	.full{object-fit: cover; width:100%; height: 600px; margin: 3rem 0rem 5rem;}
-	.medium{object-fit: cover; width:100%; height: 250px;}
+	#diy3d li {list-style: none; display: inline; padding: 1rem; line-height: 2rem;}
+	#diy3d i {color:#111; font-family: 'Material Icons'; font-weight: normal; font-style: normal; font-size: 1.8rem; line-height: 2rem; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; font-feature-settings: 'liga'; padding-left: 32px; } 
+	#diy3d h2 {color:#111; font-size: 2rem; font-weight:500; margin-bottom: 1rem;} h3 {color:#111; font-size: 1.6rem; font-weight:500; margin: 4rem 0 1rem;}
+	#diy3d h4 {font-size: 1.2rem; color:#111; font-weight: 500; margin: 3rem 0 2rem;}
+	#diy3d section {border-bottom:1px solid #eee; padding-bottom: 4rem;}
+	#diy3d .full{object-fit: cover; width:100%; height: 600px; margin: 3rem 0rem 5rem;}
+	#diy3d .medium{object-fit: cover; width:100%; height: 250px;}
 
-	header {padding:0 1.5rem;}
-	.content { padding-right: 12rem;}
-	.left { min-width: 12rem; font-size:.9rem; color:#111; font-weight: 500;}
-	.left i {font-size: 1.2rem;}
-	p {font-size: 1.1rem; line-height: 2.4rem; color:#555; margin: 2rem 0;}
-	.w33 {width: 33%; padding: 1rem;}
-	button {padding: 16px 32px;}
+	#diy3d header {padding:0 1.5rem;}
+	#diy3d .content { padding-right: 12rem;}
+	#diy3d .left { min-width: 12rem; font-size:.9rem; color:#111; font-weight: 500;}
+	#diy3d .left i {font-size: 1.2rem;}
+	#diy3d p {font-size: 1.1rem; line-height: 2.4rem; color:#555; margin: 2rem 0;}
+	#diy3d .w33 {width: 33%; padding: 1rem;}
+	#diy3d button {padding: 16px 32px;}
 
 
 </style>
