@@ -9,21 +9,30 @@
 		<i @click="editData" v-if="!add">edit</i>
 		<i @click="add=true" v-if="!add">add</i>
 		<i v-if="!add">search</i>
-		<i v-if="!add">menu</i>
+		<i v-if="!add">view_comfy</i>
 	</header>
-	<div id=scroll>
+	<div id="scroll">
 	<section v-if="add">
 		<textarea v-model="record.article"></textarea>
-
 		<button @click="cancel">Cancel</button>
 		<button @click="addData">Save</button>
 	</section>
-	<section v-if="!add">
+	<section v-if="pagetype=='main'">
 		<div v-html="article"></div>
-		
+	</section>
+	<section v-if="pagetype=='list'">
+
 	</section>
 	
 	<footer>
+
+		<div class=flex>
+
+			<div @click="prevArticle"><i>chevron_left</i>Previous Article</div>
+			<div class=spacer>&nbsp;</div>
+			<div class="next" @click="nextArticle">Next Article<i>chevron_right</i></div>
+			
+		</div>
 	</footer>
 	</div>
 </main>
@@ -38,16 +47,23 @@ export default {
   name: 'Javascript',
   data () {
     return {
+    	pagetype: "main",
     	add:false,
     	edit:false,
-    	record:{category:"test",article:""}
+    	record:{category:"test",article:""},
+    	current:0
     }
   },
   computed: {
     ...mapGetters(['data']),
-    article() {
+    articleMap() {
     	var val = _(this.data).map().value();
-    	return val[0].article ? val[val.length-2].article : "Loading";
+    	this.current = val.length-2;
+    	return val;
+    },
+    article() {
+    	
+    	return this.articleMap[0].article ? this.articleMap[this.current].article : "Loading";
     },
     key() {
     	var val = _(this.data).keys().value();
@@ -65,6 +81,13 @@ export default {
   		this.record.article = this.article;
   		this.edit = true;
   		this.add = true;
+  	},
+  	nextArticle() {
+  		if(this.current!=0)
+  			this.current--;
+  	},
+  	prevArticle() {
+  		this.current++;
   	},
     
 	addData() {
@@ -115,9 +138,11 @@ export default {
 	#thejavascript .left { min-width: 12rem; font-size:.9rem; color:#111; font-weight: 500;}
 	#thejavascript .left i {font-size: 1.2rem;}
 	#thejavascript .w33 {width: 33%; padding: 1rem;}
-	#thejavascript .full{object-fit: cover; width:100%; height: 600px; margin: 3rem 0rem 5rem; overflow:hidden;}
+	#thejavascript .full{object-fit: cover; width:100%; height: 500px; margin: 3rem 0rem 5rem; overflow:hidden;}
 	#thejavascript .full::after {content:attr(title);}
 	#thejavascript .medium{object-fit: cover; width:100%; height: 250px;}
+	#thejavascript footer {margin-bottom: 5rem; margin-top: 2rem;}
+	#thejavascript .next {line-height: 2rem;}
 
 
 </style>
