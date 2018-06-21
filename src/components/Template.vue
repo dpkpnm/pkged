@@ -8,7 +8,7 @@
     <main>
       <h3>Top destinations</h3>
       <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
-        <swiper-slide v-for="item in temp"><img :src="item.img"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
+        <swiper-slide v-for="item in temp"><img :src="item.img" @click="showDetail(item)"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
       </swiper>
       <h3>This year</h3>
       <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
@@ -22,6 +22,14 @@
       <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
         <swiper-slide v-for="item in temp"><img :src="item.img"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
       </swiper>
+      <transition name="slide-fade">
+      <div id="detail" v-if="detail1">
+        <img :src="selectedItem.img" />
+        <h3>{{selectedItem.title}}</h3>
+        {{selectedItem.sub}}
+        <div><button>+ Subscribe</button></div>
+      </div>
+      </transition>
     </main>
     <footer>Footer</footer>
   </div>
@@ -38,6 +46,8 @@ export default {
   data: function () {
     return {
       scrolled: false,
+      detail1:false,
+      selectedItem:{},
       swiperOption: {
         slidesPerView: innerWidth/134,
         spaceBetween: 8,
@@ -60,6 +70,10 @@ export default {
   methods: {
     handleScroll() {
       this.scrolled = arguments[0].target.scrollTop>100;
+    },
+    showDetail(item) {
+      this.detail1 = true;
+      this.selectedItem = item;
     }
   },
   created: function() {
@@ -88,4 +102,16 @@ export default {
   .swiper-container .swiper-slide:first-child {margin-left:16px;}
   .swiper-slide img {width:100%; margin-bottom:0.5rem; border-radius:3px;}
   .swiper-slide>span {font-size:0.7rem; color:rgba(0,0,0,0.6);}
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+  #detail {position: absolute; left:0; top:0; z-index:5; height:100vh; width:100vw; background:white; padding:64px 16px;}
 </style>
