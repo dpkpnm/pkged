@@ -1,9 +1,12 @@
 <template>
   <div>
-    <header :class="{scrolled:scrolled,flex:true}">
+    <header :class="{scrolled:scrolled,flex:true}" v-if="!detail1">
       <i class="material-icons">search</i>
-      <div class="grow">pkged</div>
+      <div class="grow">తెలుగు</div>
       <i class="material-icons">more_vert</i>
+    </header>
+    <header :class="{scrolled:scrolled,flex:true}" v-if="detail1">
+      <i class="material-icons" @click="back">arrow_back_ios</i>
     </header>
     <main>
       <h3>Top destinations</h3>
@@ -74,6 +77,9 @@ export default {
     showDetail(item) {
       this.detail1 = true;
       this.selectedItem = item;
+    },
+    back() {
+      this.detail1=false;
     }
   },
   created: function() {
@@ -86,7 +92,7 @@ export default {
 }
 </script>
 <style scoped>
-  body {font-size: 2rem;}
+  body {font-size: 2rem; letter-spacing: 4px;}
   h3 {margin-bottom: 16px; margin-top:32px; font-weight:normal; padding-left:16px; font-size:1rem;}
   header {padding: 8px 16px; position: absolute; left:0; top:0; width:100%; z-index:10; background:#fff; font-size: 1.4rem; color:rgb(0,0,0,0.6); font-weight:bold;}
   main {padding:48px 0px 64px 0px; height: 100vh; position: absolute; top:0; left:0; width:100vw; font-size:0.8rem;}
@@ -100,13 +106,13 @@ export default {
   .scrolled {box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
   .swiper-container {height: 180px;}
   .swiper-container .swiper-slide:first-child {margin-left:16px;}
-  .swiper-slide img {width:100%; margin-bottom:0.5rem; border-radius:3px;}
-  .swiper-slide>span {font-size:0.7rem; color:rgba(0,0,0,0.6);}
+  .swiper-slide img {width:100%; border-radius:3px;}
+  .swiper-slide>span {font-size:0.6rem; color:rgba(0,0,0,0.6);}
   .slide-fade-enter-active {
-    transition: all .3s ease;
+    transition: all .4s ease;
   }
   .slide-fade-leave-active {
-    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .4s ease;
   }
   .slide-fade-enter, .slide-fade-leave-to
   /* .slide-fade-leave-active below version 2.1.8 */ {
@@ -114,4 +120,5 @@ export default {
     opacity: 0;
   }
   #detail {position: absolute; left:0; top:0; z-index:5; height:100vh; width:100vw; background:white; padding:64px 16px;}
+  button {border:1px solid #999; padding: 8px 16px; border-radius:16px; background:#fff; outline:0;}
 </style>
