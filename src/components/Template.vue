@@ -60,6 +60,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(["places"]),
     swiper() {
       return this.$refs.mySwiper.swiper
     },
@@ -82,6 +83,9 @@ export default {
       var main = document.getElementsByTagName("MAIN")[0]
       main.addEventListener('scroll', that.handleScroll);  
     },100);
+  },
+  mounted: function() {
+     this.$store.dispatch('loadPlaces');
   }
 }
 </script>
