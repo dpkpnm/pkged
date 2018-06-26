@@ -39,7 +39,7 @@ export const store = new Vuex.Store({
 			return state.data;
 		},
 		places: function(state) {
-			return state.places;
+			return state.data.places;
 		},
 		category: function(state) {
 			return state.category;

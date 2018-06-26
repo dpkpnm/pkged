@@ -9,11 +9,13 @@
       <i class="material-icons" @click="back">arrow_back_ios</i>
     </header>
     <main>
-      <h3>Top destinations</h3>
+      <template v-for="(item,key) in states">
+      <h3>{{key}}</h3>
       <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
-        <swiper-slide v-for="item in temp"><img :src="item.img" @click="showDetail(item)"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
+        <swiper-slide v-for="(place,i) in item" v-if="i<10"><img :src="'http://dpkpnm.com/india/'+place.i" @click="showDetail(place)"><div>{{place.n}}</div><span>{{place.c}}</span></swiper-slide>
       </swiper>
-      <h3>This year</h3>
+      </template>
+     <!--  <h3>This year</h3>
       <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
         <swiper-slide v-for="item in temp"><img :src="item.img"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
       </swiper>
@@ -24,12 +26,12 @@
       <h3>Movies on TV</h3>
       <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
         <swiper-slide v-for="item in temp"><img :src="item.img"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
-      </swiper>
+      </swiper> -->
       <transition name="slide-fade">
       <div id="detail" v-if="detail1">
-        <img :src="selectedItem.img" />
-        <h3>{{selectedItem.title}}</h3>
-        {{selectedItem.sub}}
+        <img :src="'http://dpkpnm.com/india/'+selectedItem.i" />
+        <h3>{{selectedItem.n}}</h3>
+        {{selectedItem.d}}
         <div><button>+ Subscribe</button></div>
       </div>
       </transition>
@@ -65,7 +67,11 @@ export default {
   computed: {
     ...mapGetters(["places"]),
     swiper() {
-      return this.$refs.mySwiper.swiper
+      return this.$refs.mySwiper.swiper;
+    },
+    states() {
+      
+      return _(this.places).groupBy("st",function(v) { return v.i.length>0;}).value();
     },
     temp() {
       return [{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/ANKURAM.jpg","title":"అంకురం","sub":"7:00AM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/bandhvyalu-svr.jpg","title":"బాంధ‌వ్యాలు","sub":"10:00AM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/AJEYUDU.jpg","title":"అజేయుడు","sub":"1:00PM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/maro-malupu.jpg","title":"మరోమ‌లుపు","sub":"4:00PM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/devatha.jpg","title":"దేవ‌త‌","sub":"7:00PM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/Movie-reel.jpg","title":"మీరు నేను ఓ పాట‌","sub":"10:30PM "}];
