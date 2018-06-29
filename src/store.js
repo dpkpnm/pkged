@@ -26,6 +26,12 @@ export const store = new Vuex.Store({
 		data: function(state) {
 			return state.data;
 		},
+<<<<<<< HEAD
+=======
+		places: function(state) {
+			return state.places;
+		},
+>>>>>>> parent of 973834c... Places
 		category: function(state) {
 			return state.category;
 		}
