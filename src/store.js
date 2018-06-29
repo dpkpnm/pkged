@@ -1,23 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import utils from './utils'
 import {firebaseMutations} from 'vuexfire'
 import {firebaseAction} from 'vuexfire'
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
-	mutations: {
-		...firebaseMutations,
-		setData(state, obj) {
-			state.data[obj.key]=obj.value;
-		}
-	},
+	mutations: {...firebaseMutations},
 
 	state: {
 		data: {
-			name:"Text",
-			places:[]
+			name:"Text"
 		},
 		website:location.hostname,
 		category:""
@@ -27,20 +20,18 @@ export const store = new Vuex.Store({
 	actions: {
 		setData: firebaseAction(({bindFirebaseRef},obj) => {
 			bindFirebaseRef("data",obj.ref);
-		}),
-		loadPlaces: function({commit}) {
-			utils.get("http://api.dpkpnm.com/json.php?h=places", function(response) {
-				commit("setData",{"key":"places","value":response.data});
-			});
-		}
+		})
 	},
 	getters: {
 		data: function(state) {
 			return state.data;
 		},
+<<<<<<< HEAD
+=======
 		places: function(state) {
-			return state.data.places;
+			return state.places;
 		},
+>>>>>>> parent of 973834c... Places
 		category: function(state) {
 			return state.category;
 		}

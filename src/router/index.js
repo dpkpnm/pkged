@@ -7,7 +7,6 @@ import Cartoons from '@/components/Cartoons'
 import Diy3d from '@/components/Diy3d'
 import Javascript from '@/components/Javascript'
 import Readtokid  from '@/components/Readtokid'
-import Template  from '@/components/Template'
 
 
 Vue.use(Router)
@@ -27,15 +26,19 @@ const generateRoutes = () => {
   		return [
         {path:'/',component:Pkged},
         {path:'/other',component:Other},
-        {path:'/template',component:Template},
         {path:'/cartoons',component:Cartoons},
-        {path:'/',component:Cartoons},
       ]
   	}
     default: {
-      return [{path:'/',component:Template}]
-      // return [{path:'/',component:Diy3d}]
-      // return [{path:'/',component:Javascript}]
+<<<<<<< HEAD
+<<<<<<< HEAD
+      return [{path:'/',component:Home}]
+=======
+      return [{path:'/',component:Diy3d}]
+>>>>>>> 258fbc373a55423217c97cad02e37dccc1d0842f
+=======
+      return [{path:'/',component:Javascript}]
+>>>>>>> 75d31c0a96c50dcb23288276b7cc4f86c0cd2edf
     }
   }
 }
