@@ -7,9 +7,13 @@ import Cartoons from '@/components/Cartoons'
 import Diy3d from '@/components/Diy3d'
 import Javascript from '@/components/Javascript'
 import Readtokid  from '@/components/Readtokid'
-
+import Template  from '@/components/Template'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 
 Vue.use(Router)
+Vue.use(VueAwesomeSwiper);
+
 
 const generateRoutes = () => {
   switch (location.hostname) {
@@ -27,18 +31,14 @@ const generateRoutes = () => {
         {path:'/',component:Pkged},
         {path:'/other',component:Other},
         {path:'/cartoons',component:Cartoons},
+        {path:'/template',component:Template},
       ]
   	}
     default: {
-<<<<<<< HEAD
-<<<<<<< HEAD
-      return [{path:'/',component:Home}]
-=======
-      return [{path:'/',component:Diy3d}]
->>>>>>> 258fbc373a55423217c97cad02e37dccc1d0842f
-=======
-      return [{path:'/',component:Javascript}]
->>>>>>> 75d31c0a96c50dcb23288276b7cc4f86c0cd2edf
+      return [{path:'/',component:Template}]
+      // return [{path:'/',component:Home}]
+      // return [{path:'/',component:Diy3d}]
+      // return [{path:'/',component:Javascript}]
     }
   }
 }
