@@ -1,39 +1,49 @@
 <template>
   <div>
-    <header :class="{scrolled:scrolled,flex:true}" v-if="!detail1">
+    <header :class="{scrolled:scrolled,flex:true}" v-if="!details">
       <i class="material-icons">search</i>
       <div class="grow">తెలుగు</div>
       <i class="material-icons">more_vert</i>
     </header>
-    <header :class="{scrolled:scrolled,flex:true}" v-if="detail1">
+    <header :class="{scrolled:scrolled,flex:true}" v-if="details">
       <i class="material-icons" @click="back">arrow_back_ios</i>
     </header>
     <main>
-      <h3>Top destinations</h3>
-      <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
-        <swiper-slide v-for="item in temp"><img :src="item.img" @click="showDetail(item)"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
-      </swiper>
-      <h3>This year</h3>
-      <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
-        <swiper-slide v-for="item in temp"><img :src="item.img"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
-      </swiper>
-      <h3>Upcoming Releases</h3>
-      <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
-        <swiper-slide v-for="item in temp"><img :src="item.img"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
-      </swiper>
-      <h3>Movies on TV</h3>
-      <swiper ref="mySwiper" @someSwiperEvent="callback" :options="swiperOption">
-        <swiper-slide v-for="item in temp"><img :src="item.img"><div>{{item.title}}</div><span>{{item.sub}}</span></swiper-slide>
-      </swiper>
+      <Tabs @changePage="changeFunc" indexTab="friend">
+        <TabPanel label="telugu" hash="friend" fontsize="36" tabheight="90" color="red">
+            <div class="first">saf</div>
+        </TabPanel>
+        <TabPanel label="telugu" hash="convince" fontsize="36" tabheight="90" color="red">
+            <div class="second">asdf</div>
+        </TabPanel>
+        <TabPanel label="telugu" hash="country" fontsize="36" tabheight="90" color="red">
+            <div class="three">asdf</div>
+        </TabPanel>
+      </Tabs>
+<!--       <ul v-if="!details">
+        <li v-for="item in kathalu" @click="getKatha(item.id)">{{item.title}}</li>
+      </ul>
+      <div v-else>
+        <h1>{{katha.title}}</h1>
+        <div v-html="katha.details">
+        </div>
+      </div> -->
+    </main>
+    <!-- <main>
+       
+      <template v-for="(item,key) in states">
+      <h3>{{key}}</h3>
+     
+    </template>
       <transition name="slide-fade">
       <div id="detail" v-if="detail1">
-        <img :src="selectedItem.img" />
-        <h3>{{selectedItem.title}}</h3>
-        {{selectedItem.sub}}
+        <img :src="'http://dpkpnm.com/india/'+selectedItem.i" />
+        <h3>{{selectedItem.n}}</h3>
+        {{selectedItem.d}}
         <div><button>+ Subscribe</button></div>
       </div>
       </transition>
-    </main>
+    </main> -->
     <footer>Footer</footer>
   </div>
 </template>
@@ -51,6 +61,7 @@ export default {
       scrolled: false,
       detail1:false,
       selectedItem:{},
+      details:false,
       swiperOption: {
         slidesPerView: innerWidth/134,
         spaceBetween: 8,
@@ -63,9 +74,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["places"]),
+    ...mapGetters(["kathalu","katha"]),
     swiper() {
-      return this.$refs.mySwiper.swiper
+      return this.$refs.mySwiper.swiper;
+    },
+    states() {
+      
+      return _(this.places).groupBy("st",function(v) { return v.i.length>0;}).value();
     },
     temp() {
       return [{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/ANKURAM.jpg","title":"అంకురం","sub":"7:00AM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/bandhvyalu-svr.jpg","title":"బాంధ‌వ్యాలు","sub":"10:00AM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/AJEYUDU.jpg","title":"అజేయుడు","sub":"1:00PM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/maro-malupu.jpg","title":"మరోమ‌లుపు","sub":"4:00PM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/devatha.jpg","title":"దేవ‌త‌","sub":"7:00PM "},{"img":"http://www.eenadu.net/tv-movie-listings/tv-images/Movie-reel.jpg","title":"మీరు నేను ఓ పాట‌","sub":"10:30PM "}];
@@ -80,7 +95,15 @@ export default {
       this.selectedItem = item;
     },
     back() {
-      this.detail1=false;
+      this.details=false;
+    },
+    changeFunc() {
+      console.log("Change function");
+    },
+    getKatha(id) {
+      this.katha.title = this.katha.details = "";
+      this.$store.dispatch("loadKatha",id);
+      this.details=true;
     }
   },
   created: function() {
@@ -91,7 +114,8 @@ export default {
     },100);
   },
   mounted: function() {
-     this.$store.dispatch('loadPlaces');
+     // this.$store.dispatch('loadPlaces');
+     this.$store.dispatch('loadKathalu');
   }
 }
 </script>
@@ -99,7 +123,7 @@ export default {
   body {font-size: 2rem; letter-spacing: 4px;}
   h3 {margin-bottom: 16px; margin-top:32px; font-weight:normal; padding-left:16px; font-size:1rem;}
   header {padding: 8px 16px; position: absolute; left:0; top:0; width:100%; z-index:10; background:#fff; font-size: 1.4rem; color:rgb(0,0,0,0.6); font-weight:bold;}
-  main {padding:48px 0px 64px 0px; height: 100vh; position: absolute; top:0; left:0; width:100vw; font-size:0.8rem;}
+  main {padding:64px 16px; height: 100vh; position: absolute; top:0; left:0; width:100vw; font-size:0.8rem;}
 
   .b {font-weight: 900;}
   .flex {display: flex; align-items: center; text-align: center;}
@@ -125,4 +149,5 @@ export default {
   }
   #detail {position: absolute; left:0; top:0; z-index:5; height:100vh; width:100vw; background:white; padding:64px 16px;}
   button {border:1px solid #999; padding: 8px 16px; border-radius:16px; background:#fff; outline:0;}
+  li {padding: 16px; border-bottom: 1px solid #efefef; list-style-type: none;}
 </style>
