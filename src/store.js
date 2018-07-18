@@ -19,7 +19,9 @@ export const store = new Vuex.Store({
 			name:"Text",
 			places:[],
 			kathalu:[],
-			katha:{}
+			katha:{},
+			lyrics:[],
+			lyric:{}
 		},
 		website:location.hostname,
 		category:""
@@ -44,7 +46,18 @@ export const store = new Vuex.Store({
 			utils.get("https://api.dpkpnm.com/json.php?h=kathalu&id="+id, function(response) {
 				commit("setData",{key:"katha",value:response.data[0]});
 			})
-		}
+		},
+		loadLyric: function({commit},id) {
+			if(id)
+			utils.get("https://api.dpkpnm.com/json.php?h=lyrics&id="+id, function(response) {
+				commit("setData",{key:"lyric",value:response.data[0]});
+			})
+			else
+			utils.get("https://api.dpkpnm.com/json.php?h=lyrics&col=title,id", function(response){
+				commit("setData",{"key":"lyrics",value:response.data});
+			})
+		},
+		
 	},
 	getters: {
 		data: function(state) {
@@ -61,8 +74,16 @@ export const store = new Vuex.Store({
 		},
 		katha: function(state) {
 			return state.data.katha;
-		}
+		},
 
+		lyrics: function(state) {
+			return state.data.lyrics;
+		},
+		
+		lyric: function(state) {
+			return state.data.lyric;
+		},
+		
 	}
 
 })
