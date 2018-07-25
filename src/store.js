@@ -9,14 +9,19 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
 	mutations: {
 		...firebaseMutations,
+		
 		setData(state, obj) {
 			state.data[obj.key]=obj.value;
+		},
+		setJSON(state, obj) {
+			state.data.json[obj.key]=obj.value;
 		}
 	},
 
 	state: {
 		data: {
 			name:"Text",
+			json:{},
 			places:[],
 			kathalu:[],
 			katha:{},
@@ -32,6 +37,12 @@ export const store = new Vuex.Store({
 		setData: firebaseAction(({bindFirebaseRef},obj) => {
 			bindFirebaseRef("data",obj.ref);
 		}),
+		load: function({commit},obj) {
+			debugger;
+			utils.get("https://api.dpkpnm.com/json.php?"+obj.url, function(response) {
+				commit("setJSON",{"key":obj.key,"value":response.data});
+			})
+		},
 		loadPlaces: function({commit}) {
 			utils.get("https://api.dpkpnm.com/json.php?h=places", function(response) {
 				commit("setData",{"key":"places","value":response.data});
@@ -48,6 +59,7 @@ export const store = new Vuex.Store({
 			})
 		},
 		loadLyric: function({commit},id) {
+			debugger;
 			if(id)
 			utils.get("https://api.dpkpnm.com/json.php?h=lyrics&id="+id, function(response) {
 				commit("setData",{key:"lyric",value:response.data[0]});
@@ -62,6 +74,9 @@ export const store = new Vuex.Store({
 	getters: {
 		data: function(state) {
 			return state.data;
+		},
+		json: function(state) {
+			return state.data.json;
 		},
 		places: function(state) {
 			return state.data.places;

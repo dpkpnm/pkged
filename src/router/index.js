@@ -8,6 +8,8 @@ import Diy3d from '@/components/Diy3d'
 import Javascript from '@/components/Javascript'
 import Readtokid  from '@/components/Readtokid'
 import Template  from '@/components/Template'
+import Lyrics  from '@/components/Lyrics'
+
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 
@@ -34,10 +36,11 @@ const generateRoutes = () => {
         {path:'/cartoons',component:Cartoons},
         // {path:'/',component:Cartoons},
         {path:'/template',component:Template},
+        {path:'/lyrics',component:Lyrics},
       ]
   	}
     default: {
-      return [{path:'/',component:Template}]
+      return [{path:'/',component:Lyrics}]
      // return [{path:'/',component:Diy3d}]
       // return [{path:'/',component:Javascript}]
     }

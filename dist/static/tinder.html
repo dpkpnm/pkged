@@ -40,7 +40,7 @@
           <div class="favoritecard"></div>
         </div>
       </div>
-      <div class=footer>
+      <div class=footer v-if="!loading">
         <div class=spacer></div>
         <div @click="action('clear')" class="pointer"><i>clear</i></div>
         <div class=spacer></div>
@@ -66,7 +66,8 @@
   data: {
     currentcard:0,
     cards:[],
-    lastcard:""
+    lastcard:"",
+    loading:false
   },
   mounted: function() {
     this.getNextData();
@@ -74,14 +75,15 @@
   
   methods: {
     action: function(actiontype) {
-      if(this.currentcard<=0) {
-        this.getNextData();
-      }
       if(actiontype=='clear')
         this.cards[this.currentcard].clear=true;
       if(actiontype=='favorite')
         this.cards[this.currentcard].favorite=true;
       this.currentcard--;
+      if(this.currentcard<0) {
+        this.getNextData();
+        this.loading=true;
+      }
     },
     getNextData: function() {
       debugger;
@@ -95,7 +97,7 @@
         })
         that.currentcard = that.cards.length-1;
         console.log(that.currentcard);
-        debugger;
+        that.loading=false;
         that.lastcard = that.cards[that.currentcard].name;
         console.log(that.lastcard);
         // console.log( _(data.val()).map().value());
