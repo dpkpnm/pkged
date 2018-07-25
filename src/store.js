@@ -14,7 +14,7 @@ export const store = new Vuex.Store({
 			state.data[obj.key]=obj.value;
 		},
 		setJSON(state, obj) {
-			state.data.json[obj.key]=obj.value;
+			state.data[obj.key]=obj.value;
 		}
 	},
 
@@ -26,7 +26,8 @@ export const store = new Vuex.Store({
 			kathalu:[],
 			katha:{},
 			lyrics:[],
-			lyric:{}
+			lyric:{},
+			movies:[]
 		},
 		website:location.hostname,
 		category:""
@@ -38,7 +39,6 @@ export const store = new Vuex.Store({
 			bindFirebaseRef("data",obj.ref);
 		}),
 		load: function({commit},obj) {
-			debugger;
 			utils.get("https://api.dpkpnm.com/json.php?"+obj.url, function(response) {
 				commit("setJSON",{"key":obj.key,"value":response.data});
 			})
@@ -59,17 +59,20 @@ export const store = new Vuex.Store({
 			})
 		},
 		loadLyric: function({commit},id) {
-			debugger;
-			if(id)
-			utils.get("https://api.dpkpnm.com/json.php?h=lyrics&id="+id, function(response) {
-				commit("setData",{key:"lyric",value:response.data[0]});
-			})
-			else
-			utils.get("https://api.dpkpnm.com/json.php?h=lyrics&col=title,id", function(response){
-				commit("setData",{"key":"lyrics",value:response.data});
+			utils.get("https://api.dpkpnm.com/lyric.php", function(response){
+				commit("setData",{"key":"lyric",value:response.data});
 			})
 		},
-		
+		loadMovies: function({commit},id) {
+			utils.get("https://api.dpkpnm.com/json.php?h=movies&col=title,id", function(response) {
+				commit("setData",{"key":"movies",value:response.data});
+			})
+		},
+		saveLyric: function({commit},obj) {
+			utils.get("https://api.dpkpnm.com/lyric.php?m="+obj.movie+"&l="+obj.lyric, function(response) {
+				commit("setData",{"key":"lyric",value:response.data});
+			})
+		}
 	},
 	getters: {
 		data: function(state) {
@@ -98,6 +101,9 @@ export const store = new Vuex.Store({
 		lyric: function(state) {
 			return state.data.lyric;
 		},
+		movies: function(state) {
+			return state.data.movies;
+		}
 		
 	}
 

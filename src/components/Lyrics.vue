@@ -1,13 +1,15 @@
 <template>
-  <div>
-  <div :class="{header:true,scrolled:scrolled,flex:true,red:true}" v-if="state==''">తెలుగు</div>
-  <div :class="{header:true,scrolled:scrolled,flex:true,red:true}" v-else><i class='material-icons' @click="back">arrow_back</i><span class="back">{{backTitle}}</span></div>
-  <main>
-    <div v-if="state==''">
-      <div v-for="lyric in sortLyrics" @click="showDetail(lyric)" class="pl16">{{lyric.title}}</div>
+  <div class='flex'>
+    <div class="p16">
+      <div class="h1">{{cnLyric.title}}</div>
+      <div>{{cnLyric.labels}}</div>
+      <pre>{{cnLyric.lyric}}</pre>
+      <span @click="save(99999)">Skip</span>
     </div>
-    <transition name="slide-fade"><div class="lyric p16" v-if="state=='#detail'" v-html="lyric.details"></div></transition>
-  </main>
+    <div class="p16 h100">
+      <input type="text" v-model='filter1'/>
+      <div v-for="movie in orderedMovies" @click="save(movie.id)">{{movie.name}} - {{movie.year}}</div>
+    </div>
   </div>
 </template>
 
@@ -21,84 +23,46 @@ export default {
   
   data: function () {
     return {
-      scrolled: false,
-      isDetail:false,
-      isLyric: false,
-      backTitle:"",
-      state:"",
-      selectedItem:{},
-      seletedSong:{},
-      details:false,
-      swiperOptionh: {
-        spaceBetween: 50,
-      },
-      swiperOption: {
-        slidesPerView: innerWidth/134,
-        spaceBetween: 8,
-        freeMode:true,
-      },
-      pageSwiperOption: {
-        slidesPerView: 1,
-        spaceBetween: 8,
-        freeMode:false,
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true
-        }
-      },
-
+      filter1:""
     }
   },
   computed: {
-     ...mapGetters(["lyrics","lyric"]),
-    sortLyrics: function() {
-      return _(this.lyrics).orderBy("title").value();
+    ...mapGetters(["lyric","data"]),
+    orderedMovies: function() {
+      var that=this;
+      
+      if(this.data.movies)
+        return _(this.data.movies).filter(function(v) {return v.name.indexOf(that.filter1)>=0}).orderBy("name").value();
+      return [];
+    },
+    cnLyric: function() {
+      if(this.lyric)
+        return this.lyric[0];
+      
+      return {};
     }
   },
   methods: {
-    handleScroll() {
-      this.scrolled = arguments[0].target.scrollTop>100;
-    },
-    showDetail(item) {
-      this.selectedItem=item;
-      this.isDetail=true;
-      this.$store.dispatch("loadLyric",item.id);
-      history.pushState(null, null, '#detail');
-      this.state="#detail";
-      this.backTitle="";
-      
-    },
-    showLyric(item) {
-      this.isLyric=true;
-      this.selectedSong=item;
-      this.state="#lyric"
-      history.pushState(null, null, '#lyric');    
-      this.backTitle=this.selectedItem.title;
-    },
-    changePage() {
-      this.state=location.hash;
-    },
-    back() {
-      history.go(-1);
+    save: function(id) {
+      this.$store.dispatch("saveLyric",{lyric:this.cnLyric.id,movie:id});
+
     }
   },
   created: function() {
-    var that = this;
-    setTimeout(function() {
-      var main = document.getElementsByTagName("MAIN")[0]
-      main.addEventListener('scroll', that.handleScroll);  
-    },100);
-    window.onhashchange=this.changePage;
   },
   mounted: function() {
     this.$store.dispatch("loadLyric");
+    this.$store.dispatch("load",{url:"h=movies&col=name,id,year",key:"movies"});
+    this.$store.dispatch("loadLyric");
   }
 }
-
 </script>
 <style scoped>
   html {font-size: 18px;font-family: telugu;}
   div {font-family: telugu; font-size:1rem;}
+  input {font-size: 1.6rem; padding: 8px;}
+  pre {width:50vw; white-space: normal;}
+  .h100 {height:100vh; overflow:auto;}
   .flex {display: flex;}
   .red {color:#f44336;}
   .blue {color:#2196F3;}
