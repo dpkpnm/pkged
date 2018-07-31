@@ -9,6 +9,7 @@ import Javascript from '@/components/Javascript'
 import Readtokid  from '@/components/Readtokid'
 import Template  from '@/components/Template'
 import Lyrics  from '@/components/Lyrics'
+import Songs  from '@/components/Songs'
 
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
@@ -37,10 +38,11 @@ const generateRoutes = () => {
         // {path:'/',component:Cartoons},
         {path:'/template',component:Template},
         {path:'/lyrics',component:Lyrics},
+        {path:'/songs',component:Songs},
       ]
   	}
     default: {
-      return [{path:'/',component:Lyrics}]
+      return [{path:'/',component:Songs}]
      // return [{path:'/',component:Diy3d}]
       // return [{path:'/',component:Javascript}]
     }

@@ -1,14 +1,22 @@
 <template>
   <div class='flex'>
-    <div class="p16">
-      <div class="h1">{{cnLyric.title}}</div>
-      <div>{{cnLyric.labels}}</div>
-      <pre>{{cnLyric.lyric}}</pre>
-      <span @click="save(99999)">Skip</span>
+    <div v-if="isSong" class="p16">
+      <div class="h1">{{song.album.album_title}}</div>
+      <div v-for="track in song.album.track" class="p8">
+        {{track.song_utf}}
+      </div>
     </div>
-    <div class="p16 h100">
-      <input type="text" v-model='filter1'/>
-      <div v-for="movie in orderedMovies" @click="save(movie.id)">{{movie.name}} - {{movie.year}}</div>
+    <div v-else>
+      <div class="p16">
+        <div class="h1">{{cnLyric.title}}</div>
+        <div>{{cnLyric.labels}}</div>
+        <pre>{{cnLyric.lyric}}</pre>
+        <span @click="save(99999)">Skip</span>
+      </div>
+      <div class="p16 h100">
+        <input type="text" v-model='filter1'/>
+        <div v-for="movie in orderedMovies" @click="save(movie.id)">{{movie.name}} - {{movie.year}}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -23,11 +31,12 @@ export default {
   
   data: function () {
     return {
-      filter1:""
+      filter1:"",
+      isSong:true
     }
   },
   computed: {
-    ...mapGetters(["lyric","data"]),
+    ...mapGetters(["lyric","data","song"]),
     orderedMovies: function() {
       var that=this;
       
@@ -53,7 +62,8 @@ export default {
   mounted: function() {
     this.$store.dispatch("loadLyric");
     this.$store.dispatch("load",{url:"h=movies&col=name,id,year",key:"movies"});
-    this.$store.dispatch("loadLyric");
+    this.$store.dispatch("loadSong");
+    
   }
 }
 </script>

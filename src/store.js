@@ -27,7 +27,9 @@ export const store = new Vuex.Store({
 			katha:{},
 			lyrics:[],
 			lyric:{},
-			movies:[]
+			movies:[],
+			song:{},
+			songs:[]
 		},
 		website:location.hostname,
 		category:""
@@ -64,7 +66,7 @@ export const store = new Vuex.Store({
 			})
 		},
 		loadMovies: function({commit},id) {
-			utils.get("https://api.dpkpnm.com/json.php?h=movies&col=title,id", function(response) {
+			utils.get("https://api.dpkpnm.com/json.php?h=movies", function(response) {
 				commit("setData",{"key":"movies",value:response.data});
 			})
 		},
@@ -72,6 +74,16 @@ export const store = new Vuex.Store({
 			utils.get("https://api.dpkpnm.com/lyric.php?m="+obj.movie+"&l="+obj.lyric, function(response) {
 				commit("setData",{"key":"lyric",value:response.data});
 			})
+		},
+		loadSong: function({commit}) {
+			utils.get("https://api.dpkpnm.com/z.php?f=api/album.json", function(response) {
+				commit("setData",{"key":"song",value:response.data});
+			})	
+		},
+		loadSongs: function({commit}) {
+			utils.get("https://api.dpkpnm.com/lyric.php?all=1", function(response) {
+				commit("setData",{"key":"songs",value:response.data});
+			})	
 		}
 	},
 	getters: {
@@ -103,7 +115,14 @@ export const store = new Vuex.Store({
 		},
 		movies: function(state) {
 			return state.data.movies;
+		},
+		song: function(state) {
+			return state.data.song;
+		},
+		songs: function(state) {
+			return state.data.songs;
 		}
+
 		
 	}
 
