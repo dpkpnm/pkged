@@ -10,6 +10,7 @@ import Readtokid  from '@/components/Readtokid'
 import Template  from '@/components/Template'
 import Lyrics  from '@/components/Lyrics'
 import Songs  from '@/components/Songs'
+import Pravachanam  from '@/components/Pravachanam'
 
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
@@ -39,10 +40,11 @@ const generateRoutes = () => {
         {path:'/template',component:Template},
         {path:'/lyrics',component:Lyrics},
         {path:'/songs',component:Songs},
+        {path:'/pravachanam',component:Pravachanam},
       ]
   	}
     default: {
-      return [{path:'/',component:Songs}]
+      return [{path:'/',component:Pravachanam}]
      // return [{path:'/',component:Diy3d}]
       // return [{path:'/',component:Javascript}]
     }
