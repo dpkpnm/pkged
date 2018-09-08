@@ -58,8 +58,8 @@ export default {
 <style scoped>
   button {font-size: 1.2rem; padding: 8px;}
   main {overflow: auto; min-height:600px;}
-  .appwrapper {display: grid; grid-template-rows: 48px 1fr 48px; overflow: hidden;}
-  .p8 {padding:8px;}
   body {font-family: telugu;}
   i {font-family: 'Material Icons'; font-weight: normal; font-style: normal; text-transform: none; letter-spacing: normal; word-wrap: normal; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -moz-osx-font-smoothing: grayscale; font-feature-settings: 'liga';  padding:4px; font-size:1.4rem;}
+  .appwrapper {display: grid; grid-template-rows: 48px 1fr 48px; overflow: hidden;}
+  .p8 {padding:8px;}
 </style>
