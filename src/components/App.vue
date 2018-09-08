@@ -3,16 +3,19 @@
 	  <!-- <v-navigation-drawer app></v-navigation-drawer> -->
 	  <v-toolbar app flat>
 	  	<v-btn icon v-if="!detail"> <v-icon>menu</v-icon> </v-btn>
-	  	<v-btn icon v-if="detail" @click="detail=false"> <v-icon>arrow_back</v-icon> </v-btn>
+	  	<v-btn icon v-if="detail" @click="back"> <v-icon>arrow_back</v-icon> </v-btn>
 	  	<v-toolbar-title>India Visit</v-toolbar-title>
     	<v-spacer></v-spacer>
-    	<v-btn icon v-if="!grid" @click="changeDisplay"> <v-icon>apps</v-icon> </v-btn>
-    	<v-btn icon v-if="grid" @click="changeDisplay"> <v-icon>reorder</v-icon> </v-btn>
-    	<v-btn icon> <v-icon>search</v-icon> </v-btn>
+    	<v-btn icon v-if="!grid && !detail" @click="go('grid')"> <v-icon>apps</v-icon> </v-btn>
+    	<v-btn icon v-if="grid && !detail" @click="go()"> <v-icon>reorder</v-icon> </v-btn>
+    	<v-btn icon v-if="!detail"> <v-icon>search</v-icon> </v-btn>
 	  </v-toolbar>
 	  <v-content>
 	  	<transition name="slide-left">
-		    <v-list v-if="!detail">
+	  		<div class="flex" v-for="item in data.places">
+	  			{{item.n}}
+	  		</div>
+		    <!-- <v-list v-if="!detail && !grid">
 		      <v-list-tile v-for="item in data.places" :key="item.id" avatar @click="showDetail(item)">
 		        <v-list-tile-action>
 		          <v-icon color="pink">star</v-icon>
@@ -26,9 +29,15 @@
 		          <img :src="'https://api.dpkpnm.com/' + item.i">
 		        </v-list-tile-avatar>
 		      </v-list-tile>
-		    </v-list>
+		    </v-list> -->
+		    <v-layout v-if="!detail && grid" justify-center row wrap>
+          <v-flex v-for="item in data.places" :key="n" xs4 pa-1 d-flex>
+            <v-card flat tile class="d-flex">
+              <v-img :src="'https://api.dpkpnm.com/'+item.i"  @click="showDetail(item)" aspect-ratio="1" class="grey lighten-2" />
+            </v-card>
+          </v-flex>
+		    </v-layout>
 		    <v-layout v-if="detail" justify-center row wrap>
-		    	
 			    <v-flex xs12>
 				    <v-card >
 			        <v-img :src="'https://api.dpkpnm.com/' + selectedItem.i" aspect-ratio="1.75"></v-img>
@@ -39,7 +48,6 @@
 			            <v-container pt-4>{{selectedItem.d}}</v-container>
 			          </div>
 			        </v-card-title>
-
 			        <v-card-actions>
 			          <v-btn flat color="orange">Share</v-btn>
 			          <v-btn flat color="orange">Explore</v-btn>
@@ -49,7 +57,6 @@
 		   </v-layout>
 			</transition>
 	  </v-content>
-	  <v-footer app></v-footer>
 	</v-app>
 </template>
 <script>
@@ -57,27 +64,47 @@
   export default {
     data() {
     	return {
-    		detail:false,
     		selectedItem:{},
-    		grid: false
+    		hash:"#",
     	}
     },
     computed: {	
-  	 ...mapGetters(["data"]),
-
+  		...mapGetters(["data"]),
+  		detail: function() {
+  			return this.hash=="#detail";
+  		},
+  		grid: function() {
+  			return this.hash=="#grid";
+  		}
     },
     methods: {
+    	back: function() {
+
+    		history.go(-1);
+    	},
+    	go: function(page) {
+    		page = page || "";
+    		location.href = "#"+page;
+    	},
     	showDetail: function(item) {
-    		this.detail =true;
+    		this.go("detail");
     		this.selectedItem = item;
+    	},
+    	showMain: function() {
+    		this.go();
     	},
     	changeDisplay: function() {
     		this.grid = !this.grid;
     	}
     },
+    watch: {
+			'$route': function() {
+				this.hash = this.$route.hash;
+			}
+		},
     mounted() {
-    	
     	this.$store.dispatch("loadPlaces");
+    	this.hash = this.$route.hash;
 	  }
   }
 </script>
@@ -95,12 +122,12 @@
 .slide-left-enter,
 .slide-right-leave-active {
   opacity: 0;
-  transform: translate(6em, 0);
+  transform: translate(0, 6em);
 }
 
 .slide-left-leave-active,
 .slide-right-enter {
   opacity: 0;
-  transform: translate(-6em, 0);
+  transform: translate(0, -6em,);
 }
 </style>
