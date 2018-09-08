@@ -46,7 +46,7 @@ export const store = new Vuex.Store({
 			})
 		},
 		loadPlaces: function({commit}) {
-			utils.get("https://api.dpkpnm.com/json.php?h=places", function(response) {
+			utils.get("https://api.dpkpnm.com/json.php?h=places&top=100", function(response) {
 				commit("setData",{"key":"places","value":response.data});
 			});
 		},
