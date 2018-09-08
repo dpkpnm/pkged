@@ -6,7 +6,7 @@
       <div v-for="song in songs" :class="{p8:true,hide:isLyric}" @click="showLyric(song)" v-if="!isLyric">{{song.data.title}}</div>
       <textarea v-if="isLyric" :class="{p8:true,hide:!isLyric}" ref="lyric" v-model="selectedSong.data.lyric" rows="35" cols="80" />
     </main>
-    <footer><button @click="saveLyric">Save</button></footer>
+    <footer><button @click="saveLyric">Save</button><span @click="nextPage">Next</span></footer>
   </div>
 </template>
 <script>
@@ -23,7 +23,9 @@ export default {
       songsDb: cloudDb.collection("songs"),
       selectedSong:{},
       isLyric:false,
-      songs:[]
+      songs:[],
+      cnPage:1,
+      lastVisible:""
     }
   },
   computed: {
@@ -42,12 +44,25 @@ export default {
     saveLyric: function() {
       this.selectedSong.ref.update({lyric:this.selectedSong.data.lyric});
       this.isLyric=false;
+    },
+    nextPage: function() {
+      debugger;
+      this.songs = [];
+      this.cnPage++;
+      var that = this;
+      this.songsDb.orderBy("title").startAfter(that.lastVisible).limit(10).get().then(function(snapshot) {
+        snapshot.forEach(function(doc) {
+          debugger;
+          that.songs.push({data:doc.data(),ref:doc.ref});
+        })
+      })  
     }
 
   },
   mounted: function() {
     var that = this;
-    this.songsDb.limit(10).get().then(function(snapshot) {
+    this.songsDb.orderBy("title").startAfter(this.cnPage*10).limit(10).get().then(function(snapshot) {
+      that.lastVisible = snapshot.docs[snapshot.docs.length-1];
       snapshot.forEach(function(doc) {
         that.songs.push({data:doc.data(),ref:doc.ref});
       })
