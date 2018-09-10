@@ -4,7 +4,7 @@
 	  <v-toolbar app flat>
 	  	<v-btn icon v-if="!detail"> <v-icon>menu</v-icon> </v-btn>
 	  	<v-btn icon v-if="detail" @click="back"> <v-icon>arrow_back</v-icon> </v-btn>
-	  	<v-toolbar-title>India Visit</v-toolbar-title>
+	  	<v-toolbar-title>TravelIndia</v-toolbar-title>
     	<v-spacer></v-spacer>
     	<v-btn icon v-if="!grid && !detail" @click="go('grid')"> <v-icon>apps</v-icon> </v-btn>
     	<v-btn icon v-if="grid && !detail" @click="go()"> <v-icon>reorder</v-icon> </v-btn>
@@ -13,11 +13,17 @@
 	  <v-content>
 	  	<transition name="slide-left">
 	  		<div v-if="!detail && !grid">
-	  			<div class="flex pa-2 h64" v-for="item in data.places">
-	  				<span class="headline">{{item.n}}</span>
+	  		<div v-for="item in data.places" >
+	  			<div class="flex pa-2 h128" @click="showDetail(item)">
+	  				<span class="">
+	  					<div class="subheading font-weight-medium">{{item.n}}</div>
+	  					<div class="grey--text pt-5"><span class="font-weight-bold">{{item.c}}</span> - {{item.st}}</div>
+	  				</span>
 	  				<span class="fg"></span>
-	  				<v-img :src="'https://api.dpkpnm.com/'+item.i"  @click="showDetail(item)" aspect-ratio="1" class="grey lighten-2 w64" />
+	  				<v-img :src="'https://api.dpkpnm.com/'+item.i"  aspect-ratio="1" class="pa-2 w128" />
 	  			</div>
+	  			<v-divider></v-divider>
+	  		</div>
 	  		</div>
 		    <!-- <v-list v-if="!detail && !grid">
 		      <v-list-tile v-for="item in data.places" :key="item.id" avatar @click="showDetail(item)">
@@ -115,8 +121,8 @@
 <style>
 .flex {display: flex;}
 .fg {flex-grow:1;}
-.h64 {height: 64px;}
-.w64 {max-width: 64px;}
+.h128 {height: 128px;}
+.w128 {max-width: 128px; min-width:128px;}
 .slide-left-enter-active,
 .slide-left-leave-active,
 .slide-right-enter-active,

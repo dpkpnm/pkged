@@ -28,12 +28,15 @@ const generateRoutes = () => {
     case "thejavascript.com": {
       return [{path:"/", component:Javascript}]
     }
+    case "travelindia.app": {
+      return [{path:"/", component:App}]
+    }
     // case "readtokid.com": {
     //   return [{path:"/", component:Readtokid}]
     // }
   	case "pkged.com": {
   		return [
-        {path:'/',component:App},
+        {path:'/',component:Home},
         {path:'/other',component:Other},
         {path:'/template',component:Template},
         {path:'/cartoons',component:Cartoons},
