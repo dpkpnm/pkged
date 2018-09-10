@@ -13,31 +13,16 @@
 	  <v-content>
 	  	<transition name="slide-left">
 	  		<div v-if="!detail && !grid">
-	  			<div class="flex pa-2 h64" v-for="item in data.places">
-	  				<span class="headline">{{item.n}}</span>
+	  			<div class="flex pa-2 h64" v-for="item in data.incredible">
+	  				<span class="headline">{{item.title}}</span>
 	  				<span class="fg"></span>
-	  				<v-img :src="'https://api.dpkpnm.com/'+item.i"  @click="showDetail(item)" aspect-ratio="1" class="grey lighten-2 w64" />
+	  				<v-img :src="'https://incredibleindia.org'+item.image"  @click="showDetail(item)" aspect-ratio="1" class="grey lighten-2 w64" />
 	  			</div>
 	  		</div>
-		    <!-- <v-list v-if="!detail && !grid">
-		      <v-list-tile v-for="item in data.places" :key="item.id" avatar @click="showDetail(item)">
-		        <v-list-tile-action>
-		          <v-icon color="pink">star</v-icon>
-		        </v-list-tile-action>
-
-		        <v-list-tile-content>
-		          <v-list-tile-title v-text="item.n"></v-list-tile-title>
-		        </v-list-tile-content>
-
-		        <v-list-tile-avatar>
-		          <img :src="'https://api.dpkpnm.com/' + item.i">
-		        </v-list-tile-avatar>
-		      </v-list-tile>
-		    </v-list> -->
 		    <v-layout v-if="!detail && grid" justify-center row wrap>
-          <v-flex v-for="item in data.places" :key="n" xs4 pa-1 d-flex>
+          <v-flex v-for="item in data.incredible" :key="n" xs4 pa-1 d-flex>
             <v-card flat tile class="d-flex">
-              <v-img :src="'https://api.dpkpnm.com/'+item.i"  @click="showDetail(item)" aspect-ratio="1" class="grey lighten-2" />
+              <v-img :src="'https://incredibleindia.org'+item.image"  @click="showDetail(item)" aspect-ratio="1" class="grey lighten-2" />
             </v-card>
           </v-flex>
 		    </v-layout>
@@ -107,7 +92,7 @@
 			}
 		},
     mounted() {
-    	this.$store.dispatch("loadPlaces");
+    	this.$store.dispatch("loadIncredible");
     	this.hash = this.$route.hash;
 	  }
   }
