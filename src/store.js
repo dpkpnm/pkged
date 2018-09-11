@@ -11,7 +11,6 @@ export const store = new Vuex.Store({
 		...firebaseMutations,
 		
 		setData(state, obj) {
-			debugger;
 			state.data[obj.key]=obj.value;
 		},
 		setJSON(state, obj) {
@@ -89,7 +88,6 @@ export const store = new Vuex.Store({
 		},
 		loadIncredible: function({commit}) {
 			utils.get("https://api.dpkpnm.com/z1.php?f=api/incredible.json", function(response) {
-				debugger;
 				commit("setData",{"key":"incredible",value:response.data.data});
 			})		
 		}
